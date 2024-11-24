@@ -69,6 +69,13 @@ export default function Navbar() {
                             <ShoppingCartIcon />
                         </Badge>
                     </IconButton>
+                    <Typography
+                        variant="h6"
+                        sx={{ marginLeft: 2, cursor: 'pointer', color: 'white' }}
+                        onClick={() => navigate('/orders')} // Navigate to Order history
+                    >
+                        Orders
+                    </Typography>
                     <div>
                         <IconButton
                             size="large"
