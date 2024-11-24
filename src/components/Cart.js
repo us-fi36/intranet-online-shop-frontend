@@ -18,6 +18,12 @@ const Cart = () => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
+    const handleRemoveItem = (productId) => {
+        const updatedCart = cart.filter(item => item.productId !== productId);
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
+
     const handleCheckout = () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -25,7 +31,8 @@ const Cart = () => {
             return;
         }
 
-        const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+        // Retrieve userId from localStorage
+        const userId = localStorage.getItem('userId');
         console.log('User ID:', userId);
         console.log('Cart:', cart);
 
@@ -57,9 +64,14 @@ const Cart = () => {
                     <p>Quantity: {item.quantity}</p>
                     <button onClick={() => handleQuantityChange(item.productId, -1)}>-</button>
                     <button onClick={() => handleQuantityChange(item.productId, 1)}>+</button>
+                    <button onClick={() => handleRemoveItem(item.productId)}>Remove</button>
                 </div>
             ))}
-            <button onClick={handleCheckout}>Checkout</button>
+            {cart.length > 0 ? (
+                <button onClick={handleCheckout}>Checkout</button>
+            ) : (
+                <p>Your cart is empty.</p>
+            )}
         </div>
     );
 };
