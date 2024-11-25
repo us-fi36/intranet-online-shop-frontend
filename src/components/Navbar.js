@@ -6,15 +6,16 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Badge from '@mui/material/Badge'; // Badge for showing the cart count
+import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate } from 'react-router-dom';
+import logo from '../pictures/main_logo.png';
 
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [isLoggedIn, setIsLoggedIn] = React.useState(!!localStorage.getItem('token'));
-    const [cartCount, setCartCount] = React.useState(0); // State for cart count
+    const [cartCount, setCartCount] = React.useState(0);
     const navigate = useNavigate();
 
     const handleMenu = (event) => {
@@ -43,7 +44,7 @@ export default function Navbar() {
 
         updateCartCount();
 
-        // Listen for changes to localStorage (in case cart is updated elsewhere)
+
         window.addEventListener('storage', updateCartCount);
         return () => {
             window.removeEventListener('storage', updateCartCount);
@@ -54,9 +55,15 @@ export default function Navbar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
+                    <img
+                        src={logo}
+                        alt="Intranet-Shop Logo"
+                        style={{ height: '90px', width: '100px', marginRight: '10px', cursor: 'pointer', backgroundColor: 'transparent' }}
+                        onClick={() => navigate('/')}
+                    />
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-                            Products
+                        <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: 'white', fontSize: '25px' }}>
+                            INTRANET ONLINE SHOP
                         </Link>
                     </Typography>
                     <IconButton
@@ -65,14 +72,14 @@ export default function Navbar() {
                         color="inherit"
                         onClick={() => navigate('/cart')}
                     >
-                        <Badge badgeContent={cartCount} color="error"> {/* Display cart count */}
+                        <Badge badgeContent={cartCount} color="error">
                             <ShoppingCartIcon />
                         </Badge>
                     </IconButton>
                     <Typography
                         variant="h6"
-                        sx={{ marginLeft: 2, cursor: 'pointer', color: 'white' }}
-                        onClick={() => navigate('/orders')} // Navigate to Order history
+                        sx={{ marginLeft: 0, cursor: 'pointer', color: 'white', fontWeight: 'bold' }}
+                        onClick={() => navigate('/orders')}
                     >
                         Orders
                     </Typography>
@@ -102,14 +109,14 @@ export default function Navbar() {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            {!isLoggedIn ? (
+                            {!isLoggedIn ?
                                 <>
                                     <MenuItem onClick={() => navigate('/login')}>Login</MenuItem>
                                     <MenuItem onClick={() => navigate('/register')}>Register</MenuItem>
                                 </>
-                            ) : (
+                                :
                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                            )}
+                            }
                         </Menu>
                     </div>
                 </Toolbar>

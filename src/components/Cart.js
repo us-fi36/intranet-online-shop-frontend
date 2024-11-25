@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../CSS/Product.css';
 
 const Cart = () => {
     const [cart, setCart] = useState([]);
@@ -31,11 +32,6 @@ const Cart = () => {
             return;
         }
 
-        // Retrieve userId from localStorage
-        const userId = localStorage.getItem('userId');
-        console.log('User ID:', userId);
-        console.log('Cart:', cart);
-
         fetch('http://em.mshome.net:5000/api/orders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -43,7 +39,6 @@ const Cart = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Order response:', data);
                 if (data.message === 'Order placed successfully.') {
                     alert(data.message);
                     localStorage.removeItem('cart');
@@ -55,20 +50,31 @@ const Cart = () => {
             .catch(error => console.error('Error placing order:', error));
     };
 
+    const calculateTotal = () => {
+        return cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0).toFixed(2);
+    };
+
     return (
         <div>
             <h1>Cart</h1>
-            {cart.map(item => (
-                <div key={item.productId}>
-                    <h4>{item.title}</h4>
-                    <p>Quantity: {item.quantity}</p>
-                    <button onClick={() => handleQuantityChange(item.productId, -1)}>-</button>
-                    <button onClick={() => handleQuantityChange(item.productId, 1)}>+</button>
-                    <button onClick={() => handleRemoveItem(item.productId)}>Remove</button>
-                </div>
-            ))}
             {cart.length > 0 ? (
-                <button onClick={handleCheckout}>Checkout</button>
+                <div>
+                    {cart.map(item => (
+                        <div key={item.productId} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                            <div className='cartProducts'>
+                                <h4 style={{ textAlign: 'center' }}>{item.title}</h4>
+                                <p style={{ marginLeft: '10px' }}>Price: €{Number(item.price).toFixed(2)}</p>
+                                <p style={{ marginLeft: '10px' }}>Quantity: {item.quantity}</p>
+                                <button style={{ width: '70px', marginLeft: '20px' }} onClick={() => handleQuantityChange(item.productId, -1)}>-</button>
+                                <button style={{ width: '70px', marginLeft: '20px' }} onClick={() => handleQuantityChange(item.productId, 1)}>+</button>
+                                <br></br>
+                                <button style={{ marginLeft: '70px' }} onClick={() => handleRemoveItem(item.productId)}>Remove</button>
+                            </div>
+                        </div>
+                    ))}
+                    <h3>Total Price: €{calculateTotal()}</h3>
+                    <button onClick={handleCheckout}>Checkout</button>
+                </div>
             ) : (
                 <p>Your cart is empty.</p>
             )}

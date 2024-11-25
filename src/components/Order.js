@@ -20,11 +20,11 @@ const Order = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch orders.');
+                    throw new Error('Failed to fetch orders. Check JWT Token!');
                 }
 
                 const data = await response.json();
-                console.log('Orders fetched:', data); // Debugging response
+                console.log('Orders fetched:', data);
                 setOrders(data);
             } catch (err) {
                 setError(err.message);
@@ -35,7 +35,6 @@ const Order = () => {
 
         fetchOrders();
     }, []);
-
 
     if (loading) {
         return <div>Loading orders...</div>;
@@ -51,20 +50,28 @@ const Order = () => {
             {orders.length === 0 ? (
                 <p>No orders found.</p>
             ) : (
-                orders.map(order => (
-                    <div key={order.orderId} style={{ border: '1px solid #ddd', padding: '1rem', margin: '1rem 0' }}>
-                        <h3>Order ID: {order.orderId}</h3>
-                        <p>Order Date: {new Date(order.orderDate).toLocaleString()}</p>
-                        <ul>
-                            {order.items.map(item => (
-                                <li key={item.productId}>
-                                    <strong>{item.title}</strong> - €
-                                    {(item.price ? Number(item.price).toFixed(2) : '0.00')} x {item.quantity}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                ))
+                orders.map(order => {
+                    // Calculate the total sum for the order
+                    const totalSum = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+                    return (
+                        <div key={order.orderId} className='orderProducts'>
+                            <h3>Order ID: {order.orderId}</h3>
+                            <p>Order Date: {new Date(order.orderDate).toLocaleString()}</p>
+                            <ul>
+                                {order.items.map(item => (
+                                    <li key={item.productId}>
+                                        <strong>{item.title}</strong> - €
+                                        {(item.price ? Number(item.price).toFixed(2) : '0.00')} x {item.quantity}
+                                    </li>
+                                ))}
+                            </ul>
+                            <p style={{ fontWeight: 'bold', marginTop: '1rem' }}>
+                                Total: €{totalSum.toFixed(2)}
+                            </p>
+                        </div>
+                    );
+                })
             )}
         </div>
     );

@@ -80,18 +80,13 @@ button:hover {
   background-color: #0056b3;
 }
 
-.fakeToggleLoginButton {
-  text-align: center;
-  width: 20%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
 .login_h5 {
   text-align: left;
   color: #333;
+}
+
+body {
+  padding: 0;
+  margin: 0;
 }

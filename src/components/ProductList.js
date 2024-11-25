@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import '../CSS/Product.css';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
+    const [showDescriptions, setShowDescriptions] = useState({});
 
     useEffect(() => {
         fetch('http://em.mshome.net:5000/api/products')
@@ -16,25 +18,35 @@ const ProductList = () => {
         if (existing) {
             existing.quantity++;
         } else {
-            cart.push({ productId: product.product_id, title: product.title, quantity: 1 });
+            cart.push({ productId: product.product_id, title: product.title, price: Number(product.price), quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         alert(`${product.title} added to cart!`);
     };
 
+    const toggleDescription = (productId) => {
+        setShowDescriptions(showDescriptions === productId ? null : productId);
+    };
+
+
     return (
         <div>
-            <h1>Products</h1>
-            <div>
+            <h1 className='flex-row'>Products</h1>
+            <div className='flex-row'>
                 {products.map(product => (
-                    <div key={product.product_id}>
+                    <div key={product.product_id} className='productCard'>
                         <img
+                            className='productImage'
                             src={product.image ? `data:image/jpeg;base64,${product.image}` : 'https://via.placeholder.com/150'}
                             alt={product.title}
-                            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
                         />
                         <h3>{product.title}</h3>
-                        <p>{product.description}</p>
+                        <button className='descriptionButton' onClick={() => toggleDescription(product.product_id)}>
+                            {showDescriptions === product.product_id ? 'Hide Description' : 'Show Description'}
+                        </button>
+                        {showDescriptions === product.product_id && (
+                            <p style={{ textAlign: 'center', margin: '10px 0' }}>{product.description}</p>
+                        )}
                         <p>Price: €{product.price}</p>
                         <button onClick={() => addToCart(product)}>Add to Cart</button>
                     </div>
