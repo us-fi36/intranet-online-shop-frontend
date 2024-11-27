@@ -28,10 +28,9 @@ const ProductList = () => {
         setShowDescriptions(showDescriptions === productId ? null : productId);
     };
 
-
     return (
         <div>
-            <h1 className='flex-row'>Products</h1>
+            <h1 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '20px' }}>Products</h1>
             <div className='flex-row'>
                 {products.map(product => (
                     <div key={product.product_id} className='productCard'>

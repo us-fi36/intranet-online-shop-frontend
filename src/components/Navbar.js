@@ -44,10 +44,16 @@ export default function Navbar() {
 
         updateCartCount();
 
+        const syncCartCount = () => {
+            updateCartCount();
+        };
+
 
         window.addEventListener('storage', updateCartCount);
+        document.addEventListener('cartUpdated', syncCartCount);
         return () => {
             window.removeEventListener('storage', updateCartCount);
+            document.removeEventListener('cartUpdated', syncCartCount);
         };
     }, []);
 

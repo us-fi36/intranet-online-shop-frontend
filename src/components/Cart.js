@@ -61,14 +61,17 @@ const Cart = () => {
                 <div>
                     {cart.map(item => (
                         <div key={item.productId} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                            <div className='cartProducts'>
+                            <div className='productCard'>
                                 <h4 style={{ textAlign: 'center' }}>{item.title}</h4>
                                 <p style={{ marginLeft: '10px' }}>Price: €{Number(item.price).toFixed(2)}</p>
-                                <p style={{ marginLeft: '10px' }}>Quantity: {item.quantity}</p>
-                                <button style={{ width: '70px', marginLeft: '20px' }} onClick={() => handleQuantityChange(item.productId, -1)}>-</button>
-                                <button style={{ width: '70px', marginLeft: '20px' }} onClick={() => handleQuantityChange(item.productId, 1)}>+</button>
-                                <br></br>
-                                <button style={{ marginLeft: '70px' }} onClick={() => handleRemoveItem(item.productId)}>Remove</button>
+
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <button style={{ width: '70px', marginLeft: '0px' }} onClick={() => handleQuantityChange(item.productId, -1)}>-</button>
+                                    <p style={{ marginLeft: '0px' }}>Quantity: {item.quantity}</p>
+                                    <button style={{ width: '70px', marginLeft: '0px' }} onClick={() => handleQuantityChange(item.productId, 1)}>+</button>
+                                    <br></br>
+                                </div>
+                                <button style={{ backgroundColor: 'error', marginLeft: '70px' }} onClick={() => handleRemoveItem(item.productId)}>Remove</button>
                             </div>
                         </div>
                     ))}

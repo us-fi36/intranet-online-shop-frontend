@@ -55,7 +55,7 @@ const Order = () => {
                     const totalSum = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
                     return (
-                        <div key={order.orderId} className='orderProducts'>
+                        <div key={order.orderId} className='productCard' style={{ marginBottom: '10px' }}>
                             <h3>Order ID: {order.orderId}</h3>
                             <p>Order Date: {new Date(order.orderDate).toLocaleString()}</p>
                             <ul>
