@@ -4,6 +4,7 @@ import '../CSS/Product.css';
 const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [showDescriptions, setShowDescriptions] = useState({});
+    const [message, setMessage] = useState(null);
 
     useEffect(() => {
         fetch('http://em.mshome.net:5000/api/products')
@@ -21,7 +22,11 @@ const ProductList = () => {
             cart.push({ productId: product.product_id, title: product.title, price: Number(product.price), quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`${product.title} added to cart!`);
+        setMessage(`${product.title} added to cart!`);
+
+        window.dispatchEvent(new Event('cartUpdated'));
+
+        setTimeout(() => setMessage(null), 3000);
     };
 
     const toggleDescription = (productId) => {
@@ -31,6 +36,22 @@ const ProductList = () => {
     return (
         <div>
             <h1 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '20px' }}>Products</h1>
+
+            {message && (
+                <div
+                    style={{
+                        textAlign: 'center',
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        marginBottom: '20px',
+                        fontWeight: 'bold'
+                    }}
+                >
+                    {message}
+                </div>
+            )}
             <div className='flex-row'>
                 {products.map(product => (
                     <div key={product.product_id} className='productCard'>

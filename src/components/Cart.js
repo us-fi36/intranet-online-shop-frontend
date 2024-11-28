@@ -17,12 +17,14 @@ const Cart = () => {
         );
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new Event('cartUpdated'));
     };
 
     const handleRemoveItem = (productId) => {
         const updatedCart = cart.filter(item => item.productId !== productId);
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new Event('cartUpdated'));
     };
 
     const handleCheckout = () => {
@@ -61,7 +63,7 @@ const Cart = () => {
                 <div>
                     {cart.map(item => (
                         <div key={item.productId} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                            <div className='productCard'>
+                            <div className='productCard' style={{ marginLeft: '5px' }}>
                                 <h4 style={{ textAlign: 'center' }}>{item.title}</h4>
                                 <p style={{ marginLeft: '10px' }}>Price: €{Number(item.price).toFixed(2)}</p>
 
@@ -75,8 +77,8 @@ const Cart = () => {
                             </div>
                         </div>
                     ))}
-                    <h3>Total Price: €{calculateTotal()}</h3>
-                    <button onClick={handleCheckout}>Checkout</button>
+                    <h3 style={{ marginLeft: '5px' }}>Total Price: €{calculateTotal()}</h3>
+                    <button style={{ marginLeft: '5px' }} onClick={handleCheckout}>Checkout</button>
                 </div>
             ) : (
                 <p>Your cart is empty.</p>

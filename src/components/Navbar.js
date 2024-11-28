@@ -49,11 +49,11 @@ export default function Navbar() {
         };
 
 
-        window.addEventListener('storage', updateCartCount);
-        document.addEventListener('cartUpdated', syncCartCount);
+        window.addEventListener('cartUpdated', syncCartCount);
+
         return () => {
             window.removeEventListener('storage', updateCartCount);
-            document.removeEventListener('cartUpdated', syncCartCount);
+
         };
     }, []);
 
