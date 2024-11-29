@@ -18,7 +18,7 @@
 
 .productCard:hover {
     box-shadow: 1px 4px 4px rgb(58, 86, 95);
-    transform: translateY(-25px);
+    transform: translateY(-5px);
 
 }
 
